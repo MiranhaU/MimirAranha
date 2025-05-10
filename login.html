@@ -1,0 +1,130 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Ficha Digital de Investigador</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400&family=Crimson+Text:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Lora', serif;
+            background-color: #2c2a2a; /* Fundo principal bem escuro (marrom/cinza escuro) */
+            color: #d4c8b8; /* Cor de texto principal clara (bege claro) */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            line-height: 1.6;
+        }
+        .login-container {
+            background-color: #3e3b3b; /* Fundo do card um pouco mais claro que o body */
+            padding: 30px 45px;
+            border-radius: 4px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* Sombra sutil em fundos escuros */
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+            border: 1px solid #5a5353; /* Borda sutil no card, mais clara que o fundo */
+        }
+        .login-container h2 {
+            font-family: 'Crimson Text', serif;
+            font-size: 2.2em;
+            margin-bottom: 25px;
+            color: #e0d6c7; /* Título em tom bege claro, destacado */
+            font-weight: 700;
+        }
+        .login-container label {
+            display: block;
+            text-align: left;
+            margin-bottom: 8px;
+            color: #c0b6a9; /* Labels em tom bege/cinza claro */
+            font-size: 0.95em;
+            font-weight: 700;
+        }
+        .login-container input[type="email"],
+        .login-container input[type="password"] {
+            width: 100%;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+            border: 1px solid #6b6363; /* Borda do input */
+            border-radius: 3px;
+            box-sizing: border-box;
+            font-family: 'Lora', serif;
+            font-size: 1em;
+            background-color: #252323; /* Fundo do input bem escuro */
+            color: #e0d6c7; /* Texto do input claro */
+        }
+        .login-container input[type="email"]::placeholder,
+        .login-container input[type="password"]::placeholder {
+            color: #8a8070; /* Cor do placeholder mais sutil */
+        }
+        .login-container input[type="email"]:focus,
+        .login-container input[type="password"]:focus {
+            outline: none;
+            border-color: #a89c8c; /* Cor da borda ao focar (bege mais claro) */
+            box-shadow: 0 0 0 2px rgba(168, 156, 140, 0.25); /* Sombra sutil ao focar */
+        }
+        .login-container button {
+            width: 100%;
+            padding: 12px 15px;
+            background-color: #8a6d4a; /* Cor do botão principal - um ocre/marrom médio */
+            color: #f0e8d9; /* Texto do botão claro */
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-family: 'Crimson Text', serif;
+            font-size: 1.1em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: background-color 0.3s ease;
+        }
+        .login-container button:hover {
+            background-color: #a0825f; /* Cor do botão ao passar o mouse - um pouco mais clara */
+        }
+        .error-message {
+            color: #e57373; /* Vermelho claro para erros, visível em fundo escuro */
+            margin-top: 15px;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+        .register-link {
+            margin-top: 20px;
+            font-size: 0.9em;
+        }
+        .register-link a {
+            color: #b0a08f; /* Cor do link - bege/marrom claro */
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .register-link a:hover {
+            text-decoration: underline;
+            color: #d4c8b8; /* Cor do link ao passar o mouse - mais claro */
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Acesso ao Arquivo</h2>
+        <form id="loginForm">
+            <div>
+                <label for="email">Identificação (Email):</label>
+                <input type="email" id="email" name="email" required placeholder="ex: mimiraranha@gmail.com">
+            </div>
+            <div>
+                <label for="password">Senha Secreta:</label>
+                <input type="password" id="password" name="password" required placeholder="••••••••">
+            </div>
+            <button type="submit">Autenticar</button>
+            <div id="errorMessage" class="error-message" style="display: none;"></div>
+        </form>
+        <div class="register-link">
+            <p>Novo Investigador? <a href="#">Registre seus dados aqui</a>.</p>
+        </div>
+    </div>
+
+    <script type="module" src="login.js"></script>
+</body>
+</html>

@@ -1,0 +1,185 @@
+.character-menu {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            gap: 8px;
+        }
+        .character-menu button {
+            width: 32px;
+            height: 32px;
+            font-size: 18px;
+            border: none;
+            border-radius: 4px;
+            background: #333;
+            color: #fff;
+            cursor: pointer;
+        }
+        .character-menu button:hover {
+            background: #555;
+        }
+        
+        .skill-value-container {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .dice-button {
+            width: 24px;
+            height: 24px;
+            border: none;
+            border-radius: 4px;
+            background: #444;
+            color: #fff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+        }
+        
+        .dice-button:hover {
+            background: #666;
+        }
+        
+        .dice-icon {
+            width: 18px;
+            height: 18px;
+            object-fit: contain;
+        }
+        
+        /* Modal para resultados de rolagem */
+        .dice-result-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 1;
+            transition: opacity 0.3s;
+        }
+        
+        .dice-result-modal.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .dice-result-card {
+            background: #222;
+            border-radius: 10px;
+            padding: 20px;
+            min-width: 250px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            border: 1px solid #444;
+            text-align: center;
+        }
+        
+        .dice-result-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #ccc;
+        }
+        
+        .roll-skill {
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: #aaa;
+        }
+        
+        .roll-number {
+            font-size: 36px;
+            font-weight: bold;
+            margin: 10px 0;
+            color: #fff;
+        }
+        
+        .roll-result {
+            font-size: 20px;
+            margin-top: 10px;
+            padding: 5px 15px;
+            border-radius: 5px;
+            display: inline-block;
+        }
+        
+        .roll-result.sucesso {
+            background: #2a6e2a;
+            color: #fff;
+        }
+        
+        .roll-result.bom-sucesso {
+            background: #1a861a;
+            color: #fff;
+        }
+        
+        .roll-result.ótimo-sucesso {
+            background: #0c8d0c;
+            color: #fff;
+        }
+        
+        .roll-result.falha {
+            background: #822;
+            color: #fff;
+        }
+        
+        .roll-result.desastre {
+            background: #500;
+            color: #fff;
+        }
+        
+        /* Histórico de rolagens */
+        .dice-history-area {
+            width: 100%;
+            margin-top: 20px;
+            background: #282828;
+            border-radius: 5px;
+            border: 1px solid #444;
+            overflow: hidden;
+        }
+        
+        .dice-history-title {
+            background: #333;
+            color: #ccc;
+            padding: 10px;
+            font-weight: bold;
+            border-bottom: 1px solid #444;
+        }
+        
+        .dice-history-list {
+            max-height: 200px;
+            overflow-y: auto;
+            padding: 10px;
+        }
+        
+        .dice-history-entry {
+            padding: 8px;
+            margin-bottom: 5px;
+            border-radius: 3px;
+            background: #333;
+            color: #ccc;
+            font-size: 14px;
+        }
+        
+        /* Estilizando a barra de rolagem do histórico */
+        .dice-history-list::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .dice-history-list::-webkit-scrollbar-track {
+            background: #282828;
+        }
+        
+        .dice-history-list::-webkit-scrollbar-thumb {
+            background-color: #444;
+            border-radius: 4px;
+        }
+        
+        .dice-history-list::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }

@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ficha Digital de Investigador - Call of Cthulhu 7ª Ed.</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400&family=Crimson+Text:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <input type="hidden" id="characterId" value="">
+    <div class="sheet-container">
+        <header>
+            <h1>Ficha Digital de Investigador</h1>
+            <p class="subtitle">Call of Cthulhu - 7ª Edição</p>
+
+            <div class="character-menu">
+               <button id="logoutButton" class="logout-button" style="float:right; margin-left:10px;">🚪</button>
+            </div>
+        </header>
+        
+        <div class="main-column">
+            <!-- Informações do Investigador -->
+            <div class="card">
+                <h2>Informações do Investigador</h2>
+                <div class="info-grid">
+                    <div>
+                        <label for="charName">Nome:</label>
+                        <input type="text" id="charName" name="charName">
+                    </div>
+                    <div>
+                        <label for="playerName">Jogador:</label>
+                        <input type="text" id="playerName" name="playerName">
+                    </div>
+                    <div>
+                        <label for="occupation">Ocupação:</label>
+                        <input type="text" id="occupation" name="occupation">
+                    </div>
+                    <div>
+                        <label for="age">Idade:</label>
+                        <input type="number" id="age" name="age" min="15">
+                    </div>
+                    <div>
+                        <label for="sex">Sexo:</label>
+                        <input type="text" id="sex" name="sex">
+                    </div>
+                    <div>
+                        <label for="birthplace">Local de Nasc.:</label>
+                        <input type="text" id="birthplace" name="birthplace">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Status e Barras -->
+            <div class="card">
+                <h2>Status</h2>
+                <div class="status-bars">
+                    <div>
+                        <label for="health">Pontos de Vida (HP):</label>
+                        <div class="status-bar health-bar">
+                            <div class="status-bar-fill" id="healthFill"></div>
+                            <button class="arrow-button left" data-target="health" data-value="-1">◀</button>
+                            <div class="status-text">
+                                <span contenteditable="true" id="currentHP" class="editable-value">0</span>/<span id="maxHP">0</span>
+                            </div>
+                            <button class="arrow-button right" data-target="health" data-value="1">▶</button>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label for="sanity">Sanidade (SAN):</label>
+                        <div class="status-bar sanity-bar">
+                            <div class="status-bar-fill" id="sanityFill"></div>
+                            <button class="arrow-button left" data-target="sanity" data-value="-1">◀</button>
+                            <div class="status-text">
+                                <span contenteditable="true" id="currentSAN" class="editable-value">0</span>/<span id="maxSAN">99</span>
+                            </div>
+                            <button class="arrow-button right" data-target="sanity" data-value="1">▶</button>
+                        </div>
+                    </div>
+                    
+                    <div class="magic-container locked">
+                        <label for="magic">Pontos de Magia (MP):</label>
+                        <div class="status-bar magic-bar">
+                            <div class="status-bar-fill" id="magicFill"></div>
+                            <div class="magic-lock">
+                            </div>
+                            <button class="arrow-button left" data-target="magic" data-value="-1">◀</button>
+                            <div class="status-text">
+                                <span contenteditable="true" id="currentMP" class="editable-value">0</span>/<span id="maxMP">0</span>
+                            </div>
+                            <button class="arrow-button right" data-target="magic" data-value="1">▶</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Características -->
+            
+            <!-- Atributos Derivados -->
+            <div class="card">
+                <h2>Atributos Derivados</h2>
+                <div class="info-grid">
+                    <div>
+                        <label>Movimento (MOV):</label>
+                        <div id="movValue" class="derived-value">8</div>
+                    </div>
+                    <div>
+                        <label>Bônus de Dano (DB):</label>
+                        <div id="dbValue" class="derived-value">Nenhum</div>
+                    </div>
+                    <div>
+                        <label>Corpo (Build):</label>
+                        <div id="buildValue" class="derived-value">0</div>
+                    </div>
+                    <div>
+                        <label for="luck">Sorte (LUCK):</label>
+                        <input type="number" id="luck" value="50" min="0" max="99">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sistema de Abas para Informações Adicionais -->
+            <div class="card">
+                <div class="tab-container">
+                    <div class="tab active" data-tab="combat">Combate</div>
+                    <div class="tab" data-tab="background">Histórico</div>
+                    <div class="tab" data-tab="gear">Equipamentos</div>
+                </div>
+                
+                <!-- Aba de Combate -->
+                <div class="tab-content active" id="combat-tab">
+                    <h3>Combate & Armas</h3>
+                    <div class="weapon-grid">
+                        <div class="weapon-grid-header">Arma</div>
+                        <div class="weapon-grid-header">Perícia %</div>
+                        <div class="weapon-grid-header">Dano</div>
+                        <div class="weapon-grid-header">Alcance</div>
+                        
+                        <input type="text" value="Soco/Chute">
+                        <input type="number" value="25">
+                        <input type="text" value="1d3 + DB">
+                        <input type="text" value="Toque">
+                        
+                        <input type="text" placeholder="Nova arma...">
+                        <input type="number" placeholder="%">
+                        <input type="text" placeholder="Dano">
+                        <input type="text" placeholder="Alcance">
+                    </div>
+                    <button id="add-weapon" style="margin-top: 10px; padding: 5px 10px; background: #555; border: none; border-radius: 4px; color: white; cursor: pointer;">+ Adicionar Arma</button>
+                </div>
+                
+                <!-- Aba de Histórico -->
+                <div class="tab-content" id="background-tab">
+                    <h3>Histórico do Investigador</h3>
+                    <label for="personalDescription">Descrição Pessoal:</label>
+                    <textarea id="personalDescription" placeholder="Descrição física, personalidade, história..."></textarea>
+                    
+                    <label for="ideologyBeliefs">Ideologia & Crenças:</label>
+                    <textarea id="ideologyBeliefs" placeholder="No que seu personagem acredita, valores morais, religião..."></textarea>
+                    
+                    <label for="significantPeople">Pessoas Importantes:</label>
+                    <textarea id="significantPeople" placeholder="Família, amigos, mentores, rivais, inimigos..."></textarea>
+                    
+                    <div style="margin-top: 20px;">
+                        <label for="significantLocations">Locais Significativos:</label>
+                        <textarea id="significantLocations" placeholder="Locais importantes para seu personagem..."></textarea>
+                    </div>
+                    
+                    <div style="margin-top: 20px;">
+                        <label for="traits">Traços Característicos:</label>
+                        <textarea id="traits" placeholder="Maneirismos, tiques, frases habituais..."></textarea>
+                    </div>
+                </div>
+                
+                <!-- Aba de Equipamentos -->
+                <div class="tab-content" id="gear-tab">
+                    <h3>Equipamentos & Posses</h3>
+                    <div class="equipment-grid">
+                        <div>
+                            <label for="cash">Dinheiro:</label>
+                            <input type="text" id="cash" name="cash" placeholder="$">
+                        </div>
+                        <div>
+                            <label for="spendingLevel">Nível de Gastos:</label>
+                            <select id="spendingLevel" name="spendingLevel">
+                                <option value="">Selecione...</option>
+                                <option value="Miserável">Miserável</option>
+                                <option value="Pobre">Pobre</option>
+                                <option value="Médio">Médio</option>
+                                <option value="Confortável">Confortável</option>
+                                <option value="Rico">Rico</option>
+                                <option value="Muito Rico">Muito Rico</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 20px;">
+                        <h4>Itens Pessoais</h4>
+                        <div class="item-list">
+                            <div class="item-row">
+                                <input type="text" placeholder="Item" style="width: 70%;">
+                                <input type="text" placeholder="Quantidade" style="width: 15%;">
+                                <input type="text" placeholder="Peso" style="width: 15%;">
+                            </div>
+                            <div class="item-row">
+                                <input type="text" placeholder="Item" style="width: 70%;">
+                                <input type="text" placeholder="Quantidade" style="width: 15%;">
+                                <input type="text" placeholder="Peso" style="width: 15%;">
+                            </div>
+                            <div class="item-row">
+                                <input type="text" placeholder="Item" style="width: 70%;">
+                                <input type="text" placeholder="Quantidade" style="width: 15%;">
+                                <input type="text" placeholder="Peso" style="width: 15%;">
+                            </div>
+                        </div>
+                        <button id="add-item" style="margin-top: 10px; padding: 5px 10px; background: #555; border: none; border-radius: 4px; color: white; cursor: pointer;">+ Adicionar Item</button>
+                    </div>
+                    
+                    <div style="margin-top: 20px;">
+                        <label for="gear">Notas sobre Equipamentos:</label>
+                        <textarea id="gear" placeholder="Detalhes sobre seus equipamentos e posses..."></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Coluna Lateral de Perícias -->
+        <div class="side-column">
+            <div class="card" style="height: 100%;">
+                <h2>Perícias <span id="skill-filter" style="float: right; font-size: 0.8em; cursor: pointer; color: #999;">[Filtrar]</span></h2>
+                <input type="text" id="skill-search" placeholder="Buscar perícia..." style="margin-bottom: 15px;">
+                
+                <div class="skills-list">
+            
+                </div>
+            </div>
+            <div class="card">
+                <h2>Características</h2>
+                <div class="characteristic-grid">
+                    <div class="char-item">
+                        <label for="str">FOR (STR)</label>
+                        <input type="number" id="str" min="15" max="90" value="50">
+                        <div class="char-derived">
+                            <div>Bom: <span id="strHalf">25</span></div>
+                            <div>Ótimo: <span id="strQuarter">12</span></div>
+                        </div>
+                    </div>
+                    
+                    <div class="char-item">
+                        <label for="con">CON (CON)</label>
+                        <input type="number" id="con" min="15" max="90" value="50">
+                        <div class="char-derived">
+                            <div>Bom: <span id="conHalf">25</span></div>
+                            <div>Ótimo: <span id="conQuarter">12</span></div>
+                        </div>
+                    </div>
+                    
+                    <div class="char-item">
+                        <label for="siz">TAM (SIZ)</label>
+                        <input type="number" id="siz" min="15" max="90" value="50">
+                        <div class="char-derived">
+                            <div>Bom: <span id="sizHalf">25</span></div>
+                            <div>Ótimo: <span id="sizQuarter">12</span></div>
+                        </div>
+                    </div>
+                    
+                    <div class="char-item">
+                        <label for="dex">DES (DEX)</label>
+                        <input type="number" id="dex" min="15" max="90" value="50">
+                        <div class="char-derived">
+                            <div>Bom: <span id="dexHalf">25</span></div>
+                            <div>Ótimo: <span id="dexQuarter">12</span></div>
+                        </div>
+                    </div>
+                    
+                    <div class="char-item">
+                        <label for="app">APA (APP)</label>
+                        <input type="number" id="app" min="15" max="90" value="50">
+                        <div class="char-derived">
+                            <div>Bom: <span id="appHalf">25</span></div>
+                            <div>Ótimo: <span id="appQuarter">12</span></div>
+                        </div>
+                    </div>
+                    
+                    <div class="char-item">
+                        <label for="int">INT (INT)</label>
+                        <input type="number" id="int" min="15" max="90" value="50">
+                        <div class="char-derived">
+                            <div>Bom: <span id="intHalf">25</span></div>
+                            <div>Ótimo: <span id="intQuarter">12</span></div>
+                        </div>
+                    </div>
+                    
+                    <div class="char-item">
+                        <label for="pow">POD (POW)</label>
+                        <input type="number" id="pow" min="15" max="90" value="50">
+                        <div class="char-derived">
+                            <div>Bom: <span id="powHalf">25</span></div>
+                            <div>Ótimo: <span id="powQuarter">12</span></div>
+                        </div>
+                    </div>
+                    
+                    <div class="char-item">
+                        <label for="edu">EDU (EDU)</label>
+                        <input type="number" id="edu" min="15" max="90" value="50">
+                        <div class="char-derived">
+                            <div>Bom: <span id="eduHalf">25</span></div>
+                            <div>Ótimo: <span id="eduQuarter">12</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="module" src="firebase.js"></script>
+    <script src="script.js"></script>
+    
+</body>
+</html>

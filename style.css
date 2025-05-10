@@ -1,0 +1,548 @@
+:root {
+    --primary-dark: #1a1a1a;
+    --secondary-dark: #262626;
+    --card-bg: #303030;
+    --input-bg: #3a3a3a;
+    --border-color: #444;
+    --highlight-color: #ffffff;
+    --accent-color: #732020;
+    --text-color: #ffffff;
+    --secondary-text: #b0b0b0;
+    --health-color: #6b2020;
+    --sanity-color: #1e4e8f;
+    --magic-color: #5e3a8c;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Lora', serif;
+    background-color: var(--primary-dark);
+    color: var(--text-color);
+    line-height: 1.6;
+    font-size: 16px;
+    padding: 0;
+    margin: 0;
+}
+
+.sheet-container {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.main-column, .side-column {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+header {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 20px 0;
+    background-color: var(--secondary-dark);
+    border-bottom: 2px solid var(--accent-color);
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+header h1 {
+    font-family: 'Crimson Text', serif;
+    font-size: 2.5em;
+    color: var(--highlight-color);
+    margin-bottom: 5px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+header .subtitle {
+    font-size: 1em;
+    color: var(--secondary-text);
+    font-style: italic;
+}
+
+.card {
+    background-color: var(--card-bg);
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.card h2 {
+    font-family: 'Crimson Text', serif;
+    color: var(--highlight-color);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+    font-size: 1.5em;
+}
+
+input, select, textarea {
+    background-color: var(--input-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    color: var(--text-color);
+    padding: 8px 12px;
+    width: 100%;
+    font-family: 'Lora', serif;
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--highlight-color);
+    box-shadow: 0 0 5px rgba(200, 168, 128, 0.4);
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--secondary-text);
+    font-weight: bold;
+    font-size: 0.9em;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 15px;
+}
+
+.status-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.status-bar {
+    position: relative;
+    height: 25px;
+    background: #444;
+    border-radius: 15px;
+    margin-top: 5px;
+    overflow: hidden;
+}
+
+.status-bar-fill {
+    height: 100%;
+    border-radius: 15px;
+    transition: width 0.3s ease;
+}
+
+.health-bar .status-bar-fill {
+    background: linear-gradient(90deg, darkred, #8B0000);
+}
+
+.sanity-bar .status-bar-fill {
+    background: linear-gradient(90deg, #1a3c6e, #2a5ca8);
+}
+
+.magic-bar .status-bar-fill {
+    background: linear-gradient(90deg, #4a286e, #6e42a8);
+}
+
+.status-text {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    color: white;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px black;
+    z-index: 10;
+}
+
+.characteristic-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 10px;
+}
+
+.char-item {
+    background-color: #383838;
+    padding: 10px;
+    border-radius: 6px;
+    text-align: center;
+}
+
+.char-item label {
+    margin-bottom: 5px;
+    color: var(--highlight-color);
+}
+
+.char-value {
+    font-size: 1.4em;
+    font-weight: bold;
+}
+
+.char-derived {
+    font-size: 0.8em;
+    color: #aaa;
+    margin-top: 5px;
+}
+
+.skills-list {
+    display: flex;
+    flex-direction: column; /* <-- uma coluna só */
+    gap: 10px;
+    overflow-y: auto;
+    max-height: calc(100vh - 150px); /* altura máxima já existe */
+    padding-right: 5px;
+}
+
+.skill-item {
+    padding: 8px;
+    margin-bottom: 5px;
+    background-color: #383838;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    font-size: 0.9em;
+}
+
+.skill-item:hover {
+    background-color: #424242;
+}
+
+.skill-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+
+.skill-name {
+    font-weight: bold;
+}
+
+.skill-value {
+    font-weight: bold;
+    color: var(--highlight-color);
+}
+
+.skill-details {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 5px;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px dashed #555;
+}
+
+.skill-level {
+    text-align: center;
+    padding: 5px;
+    border-radius: 4px;
+    background-color: #2a2a2a;
+}
+
+.skill-level-title {
+    font-size: 0.8em;
+    color: #999;
+    margin-bottom: 2px;
+}
+
+.skill-level-value {
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.equipment-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.weapon-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.weapon-grid-header {
+    font-weight: bold;
+    color: #999;
+    font-size: 0.9em;
+    padding: 5px 0;
+    border-bottom: 1px solid #555;
+}
+
+.hidden {
+    display: none;
+}
+
+.tab-container {
+    display: flex;
+    margin-bottom: 15px;
+}
+
+.tab {
+    padding: 10px 15px;
+    background-color: #383838;
+    border-radius: 6px 6px 0 0;
+    margin-right: 5px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.tab.active {
+    background-color: var(--card-bg);
+    color: var(--highlight-color);
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+/* Estilos de rolagem personalizada */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #2a2a2a;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #555;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #666;
+}
+
+/* Responsivo */
+@media (max-width: 1100px) {
+    .skills-list {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* Adicione estas regras ao seu CSS */
+.status-bar {
+    position: relative;
+    height: 30px; /* Aumentei um pouco para acomodar os botões */
+}
+
+.arrow-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0,0,0,0.3);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    line-height: 20px;
+    text-align: center;
+    cursor: pointer;
+    z-index: 20;
+    padding: 0;
+    font-size: 12px;
+    transition: background 0.2s;
+}
+
+.arrow-button:hover {
+    background: rgba(0,0,0,0.6);
+}
+
+.arrow-button.left {
+    left: 5px;
+}
+
+.arrow-button.right {
+    right: 5px;
+}
+
+.editable-value {
+    min-width: 20px;
+    display: inline-block;
+    outline: none;
+}
+
+.editable-value:focus {
+    background: rgba(255,255,255,0.2);
+    border-radius: 3px;
+}
+
+.magic-container {
+    position: relative;
+}
+
+.magic-lock {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    z-index: 30;
+}
+
+.lock-icon {
+    color: #aaa;
+    font-size: 14px;
+}
+
+.unlock-text {
+    font-size: 0.8em;
+    color: var(--secondary-text);
+    display: none;
+    margin-left: 5px;
+}
+
+.magic-lock:hover .unlock-text {
+    display: inline;
+}
+
+.locked .status-bar {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.locked .arrow-button, 
+.locked .editable-value {
+    pointer-events: none;
+}
+
+.filter-dropdown {
+    position: absolute;
+    right: 20px;
+    top: 55px;
+    background-color: #303030;
+    border: 1px solid #444;
+    border-radius: 4px;
+    padding: 10px;
+    z-index: 100;
+    display: none;
+    width: 200px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+.filter-dropdown.show {
+    display: block;
+}
+
+.filter-option {
+    padding: 5px;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+.filter-option:hover {
+    background-color: #444;
+}
+
+.filter-option.active {
+    background-color: var(--accent-color);
+    color: white;
+}
+
+
+
+/* Garantir que as duas colunas tenham a mesma altura */
+.sheet-container {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    align-items: start; /* Para que as colunas possam crescer independentemente */
+}
+
+.main-column, .side-column {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    height: auto;
+}
+
+.skills-list {
+    max-height: calc(100vh - 150px);
+    overflow-y: auto;
+}
+
+/* Ajustes para os itens de perícia */
+.skill-item {
+    font-size: 0.85em;
+    padding: 6px;
+}
+
+.skill-header {
+    font-size: 0.9em;
+}
+
+/* Tema claro */
+body.light-theme {
+    --primary-dark: #f0f0f0;
+    --secondary-dark: #e0e0e0;
+    --card-bg: #ffffff;
+    --input-bg: #f5f5f5;
+    --border-color: #cccccc;
+    --highlight-color: #8b0000;
+    --accent-color: #732020;
+    --text-color: #333333;
+    --secondary-text: #555555;
+}
+
+/* Estilo para impressão */
+@media print {
+    body {
+        background: white;
+        font-size: 12pt;
+    }
+    
+    .sheet-container {
+        grid-template-columns: 1fr;
+        padding: 0;
+    }
+    
+    .card {
+        page-break-inside: avoid;
+        box-shadow: none;
+        border: 1px solid #ddd;
+    }
+    
+    header {
+        text-align: center;
+        padding: 10px 0;
+    }
+    
+    .hidden {
+        display: none !important;
+    }
+    
+    .tab-content:not(.active) {
+        display: block !important;
+        page-break-before: always;
+    }
+    
+    .tab-container {
+        display: none;
+    }
+}
+

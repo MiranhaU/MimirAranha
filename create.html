@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criação de Personagem - Call of Cthulhu</title>
+    <link rel="stylesheet" href="create.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Criação de Personagem - Call of Cthulhu</h1>
+            <p>Bem-vindo ao guia passo a passo para criar seu investigador</p>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="progress-bar">
+            <div class="progress" id="progress-bar">12.5%</div>
+        </div>
+        
+        <div class="steps">
+            <div class="step active" data-step="1">1. <br>  Conceito</div>
+            <div class="step" data-step="2">2. <br>  Características</div>
+            <div class="step" data-step="3">3. <br>  Atributos</div>
+            <div class="step" data-step="4">4. <br>  Profissão</div>
+            <div class="step" data-step="5">5. <br>  Perícias</div>
+            <div class="step" data-step="6">6. <br>  Itens</div>
+            <div class="step" data-step="7">7. <br> História</div>
+            <div class="step" data-step="8">8. <br>  Finalizar</div>
+        </div>
+        
+        <!-- Passo 1: Conceito do Personagem -->
+        <div class="step-content active" id="step-1">
+            <h2>Passo 1: Conceito do Personagem</h2>
+            
+            
+            
+            <div class="input-group">
+                <label for="charName">Nome do Personagem:</label>
+                <input type="text" id="charName" placeholder="Ex: Prof. William Harrison">
+            </div>
+            
+            <div class="input-group">
+                <label for="playerName">Seu Nome (Jogador):</label>
+                <input type="text" id="playerName">
+            </div>
+            
+            <div class="input-group">
+                <label for="age">Idade:</label>
+                <input type="number" id="age" min="15" max="90" value="35">
+            </div>
+            
+            <div class="input-group">
+                <label for="sex">Sexo:</label>
+                <select id="sex">
+                    <option value="masculino">Masculino</option>
+                    <option value="feminino">Feminino</option>
+                    <option value="outro">Outro</option>
+                </select>
+            </div>
+            
+            <div class="input-group">
+                <label for="birthplace">Local de Nascimento:</label>
+                <input type="text" id="birthplace" placeholder="Ex: Arkham, Massachusetts">
+            </div>
+            
+            <div class="btn-container">
+                <div></div> <!-- Espaço vazio para alinhamento -->
+                <button class="btn" id="next-1">Próximo: Características</button>
+            </div>
+        </div>
+        
+        <!-- Passo 2: Características Básicas -->
+        <div class="step-content" id="step-2">
+            <h2>Passo 2: Características Básicas</h2>
+            
+            <p>Em Call of Cthulhu, as características do seu personagem são determinadas por rolagens de dados. Aqui, simulamos essas rolagens para você.</p>
+            
+            <div class="info-box">
+                <p><strong>Sobre as características:</strong> Esses valores representam as capacidades físicas e mentais do seu investigador. Depois de gerar os valores, você poderá distribuí-los conforme achar melhor.</p>
+            </div>
+            
+            <button class="btn" id="roll-stats">Gerar Características</button>
+            
+            <div class="stat-row" id="stats-container">
+                <!-- Características serão adicionadas via JavaScript -->
+            </div>
+            
+            <div class="tip-box">
+                <p><strong>Dica:</strong> Distribua os valores de acordo com o conceito do seu personagem. Um acadêmico pode priorizar INT e EDU, enquanto um detetive particular pode precisar de DES e APA mais altos.</p>
+            </div>
+            
+            <p>Você pode rolar novamente se não estiver satisfeito com os valores gerados, ou continuar para definir os atributos derivados.</p>
+            
+            <div class="btn-container">
+                <button class="btn" id="prev-2">Anterior</button>
+                <button class="btn" id="next-2">Próximo: Atributos</button>
+            </div>
+        </div>
+        
+        <!-- Passo 3: Atributos Derivados -->
+        <div class="step-content" id="step-3">
+            <h2>Passo 3: Atributos Derivados</h2>
+            
+            <p>Baseado nas características que você escolheu, os seguintes atributos são calculados automaticamente:</p>
+            
+            <div class="stat-row">
+                <div class="stat-box">
+                    <h3>Pontos de Vida (PV)</h3>
+                    <span class="stat-value" id="hp-value">--</span>
+                    <small>(CON + TAM) ÷ 10, arredondado para baixo</small>
+                </div>
+                
+                <div class="stat-box">
+                    <h3>Sanidade (SAN)</h3>
+                    <span class="stat-value" id="san-value">--</span>
+                    <small>Igual ao POD, máximo 99</small>
+                </div>
+                
+                <div class="stat-box">
+                    <h3>Pontos de Magia (PM)</h3>
+                    <span class="stat-value" id="mp-value">--</span>
+                    <small>POD ÷ 5, arredondado para baixo</small>
+                </div>
+            </div>
+            
+            <div class="stat-row">
+                <div class="stat-box">
+                    <h3>Modificador de Dano (MD)</h3>
+                    <span class="stat-value" id="db-value">--</span>
+                    <small>Baseado na soma de FOR + TAM</small>
+                </div>
+                
+                <div class="stat-box">
+                    <h3>Corpo</h3>
+                    <span class="stat-value" id="build-value">--</span>
+                    <small>Baseado na soma de FOR + TAM</small>
+                </div>
+                
+                <div class="stat-box">
+                    <h3>Movimento</h3>
+                    <span class="stat-value" id="mov-value">--</span>
+                    <small>Baseado em DES, FOR, TAM e idade</small>
+                </div>
+            </div>
+            
+            <div class="info-box">
+                <p><strong>Estes valores são calculados automaticamente</strong> com base nas características que você definiu no passo anterior.</p>
+            </div>
+            
+            <div class="btn-container">
+                <button class="btn" id="prev-3">Anterior</button>
+                <button class="btn" id="next-3">Próximo: Profissão</button>
+            </div>
+        </div>
+        
+        <!-- Passo 4: Escolha de Profissão -->
+        <div class="step-content" id="step-4">
+            <h2>Passo 4: Escolha de Profissão</h2>
+            
+            <p>A profissão do seu investigador determina quais perícias ele domina e quantos pontos você pode distribuir entre elas.</p>
+            
+            <div class="info-box">
+                <p><strong>Pontos de Perícia de Profissão:</strong> <span id="occupation-points">--</span></p>
+                <p>Estes pontos serão usados para aumentar as perícias relacionadas à sua profissão.</p>
+            </div>
+            
+            <h3>Escolha uma Profissão:</h3>
+            
+            <div id="occupations-container">
+                <!-- Algumas profissões populares -->
+                <div class="occupation-card" data-occupation="antiquarian">
+                    <h3>Antiquário</h3>
+                    <p>Especialistas em itens raros e antigos, frequentemente possuem conhecimento sobre relíquias ocultas.</p>
+                    <p><strong>Perícias:</strong> Avaliação, História, Biblioteca, Línguas, Ocultismo, uma perícia de Crédito.</p>
+                    <p><strong>Pontos:</strong> EDU × 4</p>
+                </div>
+                
+                <div class="occupation-card" data-occupation="author">
+                    <h3>Autor/Jornalista</h3>
+                    <p>Escritores profissionais que investigam histórias para seus textos.</p>
+                    <p><strong>Perícias:</strong> Biblioteconomia, História, Língua Nativa, Persuasão, Psicologia, qualquer outra perícia.</p>
+                    <p><strong>Pontos:</strong> EDU × 4</p>
+                </div>
+                
+                <div class="occupation-card" data-occupation="detective">
+                    <h3>Detetive</h3>
+                    <p>Investigadores treinados para observar detalhes e resolver mistérios.</p>
+                    <p><strong>Perícias:</strong> Direito, Disfarce, Armas de Fogo, Psicologia, Rastreamento, uma perícia de Luta.</p>
+                    <p><strong>Pontos:</strong> EDU × 2 + DES × 2</p>
+                </div>
+                
+                <div class="occupation-card" data-occupation="doctor">
+                    <h3>Médico</h3>
+                    <p>Profissionais de saúde com conhecimento científico extenso.</p>
+                    <p><strong>Perícias:</strong> Medicina, Ciência (Biologia), Psicologia, Primeiros Socorros, Psiquiatria, outras perícias.</p>
+                    <p><strong>Pontos:</strong> EDU × 4</p>
+                </div>
+                
+                <div class="occupation-card" data-occupation="professor">
+                    <h3>Professor</h3>
+                    <p>Acadêmicos especializados em campos específicos de conhecimento.</p>
+                    <p><strong>Perícias:</strong> Biblioteconomia, uma perícia de Ciências, História, Língua Nativa, Persuasão e Psicologia.</p>
+                    <p><strong>Pontos:</strong> EDU × 4</p>
+                </div>
+                
+                <div class="occupation-card" data-occupation="police">
+                    <h3>Policial</h3>
+                    <p>Oficiais da lei treinados para manter a ordem e investigar crimes.</p>
+                    <p><strong>Perícias:</strong> Direito, Armas de Fogo, Primeiros Socorros, Psicologia, Rastreamento, uma perícia de Luta.</p>
+                    <p><strong>Pontos:</strong> EDU × 2 + DES × 2</p>
+                </div>
+            </div>
+            
+            <div class="input-group" style="margin-top:20px;">
+                <label for="custom-occupation">Ou defina uma profissão personalizada:</label>
+                <input type="text" id="custom-occupation" placeholder="Ex: Arqueólogo, Fotógrafo, etc.">
+            </div>
+            
+            <div class="btn-container">
+                <button class="btn" id="prev-4">Anterior</button>
+                <button class="btn" id="next-4">Próximo: Perícias</button>
+            </div>
+        </div>
+        
+        <!-- Passo 5: Perícias -->
+        <div class="step-content" id="step-5">
+            <h2>Passo 5: Perícias</h2>
+            
+            <div class="info-box">
+                <p><strong>Pontos de Profissão:</strong> <span id="prof-skill-points">--</span></p>
+                <p><strong>Pontos de Interesse:</strong> <span id="interest-skill-points">--</span> (INT × 2)</p>
+                <p>Distribua os pontos de profissão nas perícias relacionadas à sua ocupação. Pontos de interesse podem ser usados em quaisquer perícias.</p>
+            </div>
+            
+            <div class="input-group">
+                <label for="skill-search">Buscar perícia:</label>
+                <input type="text" id="skill-search" placeholder="Digite para filtrar perícias...">
+            </div>
+            
+            <div class="skill-list" id="skill-list">
+                <!-- Perícias serão adicionadas via JavaScript -->
+            </div>
+            
+            <div class="warning-box">
+                <p><strong>Lembre-se:</strong> Uma perícia não pode exceder 75% durante a criação do personagem (exceto Sorte e Crédito).</p>
+            </div>
+            
+            <div class="btn-container">
+                <button class="btn" id="prev-5">Anterior</button>
+                <button class="btn" id="next-5">Próximo: Equipamento</button>
+            </div>
+        </div>
+        
+        <!-- Passo 6: Equipamento -->
+        <div class="step-content" id="step-6">
+            <h2>Passo 6: Equipamento</h2>
+            
+            <p>Todo investigador precisa de equipamentos para suas aventuras. Selecione itens que fazem sentido para a profissão e história do seu personagem.</p>
+            
+            <div class="info-box">
+                <p><strong>Nível de Crédito:</strong> <span id="credit-rating">--</span></p>
+                <p>Seu nível econômico determina quanto dinheiro e quais tipos de itens você pode possuir.</p>
+            </div>
+            
+            <h3>Itens Pessoais:</h3>
+            <div id="personal-items">
+                <div class="input-group">
+                    <label for="item-1">Item 1:</label>
+                    <input type="text" id="item-1" placeholder="Ex: Relógio de bolso">
+                </div>
+                <div class="input-group">
+                    <label for="item-2">Item 2:</label>
+                    <input type="text" id="item-2" placeholder="Ex: Diário de anotações">
+                </div>
+                <div class="input-group">
+                    <label for="item-3">Item 3:</label>
+                    <input type="text" id="item-3" placeholder="Ex: Câmera fotográfica">
+                </div>
+            </div>
+            
+            <button class="btn" id="add-item" style="margin-bottom: 20px;">Adicionar Mais Item</button>
+            
+            <h3>Armas (se aplicável):</h3>
+            <div id="weapons">
+                <div class="input-group">
+                    <label for="weapon-1">Arma 1:</label>
+                    <input type="text" id="weapon-1" placeholder="Ex: Revólver .38">
+                </div>
+            </div>
+            
+            <button class="btn" id="add-weapon" style="margin-bottom: 20px;">Adicionar Arma</button>
+            
+            <div class="tip-box">
+                <p><strong>Dica:</strong> Equipamentos típicos podem incluir: lanterna, câmera, caderno de anotações, livros relacionados à profissão, ferramentas profissionais, etc.</p>
+            </div>
+            
+            <div class="btn-container">
+                <button class="btn" id="prev-6">Anterior</button>
+                <button class="btn" id="next-6">Próximo: História</button>
+            </div>
+        </div>
+        
+        <!-- Passo 7: História de Fundo -->
+        <div class="step-content" id="step-7">
+            <h2>Passo 7: História de Fundo</h2>
+            
+            <p>Desenvolva o passado do seu personagem para dar profundidade e motivação às suas ações.</p>
+            
+            <div class="input-group">
+                <label for="background">História do Personagem:</label>
+                <textarea id="background" rows="8" placeholder="Descreva a história do seu personagem, suas motivações e experiências passadas..."></textarea>
+            </div>
+            
+            <div class="input-group">
+                <label for="ideology">Ideologia/Crenças:</label>
+                <input type="text" id="ideology" placeholder="Ex: Cético, Religioso, Científico...">
+            </div>
+            
+            <div class="input-group">
+                <label for="significant-people">Pessoas Significativas:</label>
+                <input type="text" id="significant-people" placeholder="Ex: Esposa, Mentor, Colega...">
+            </div>
+            
+            <div class="input-group">
+                <label for="meaningful-locations">Locais Importantes:</label>
+                <input type="text" id="meaningful-locations" placeholder="Ex: Universidade de Miskatonic, Casa de família...">
+            </div>
+            
+            <div class="input-group">
+                <label for="treasured-possessions">Posses Valiosas:</label>
+                <input type="text" id="treasured-possessions" placeholder="Ex: Relógio de família, Livro raro...">
+            </div>
+            
+            <div class="input-group">
+                <label for="traits">Traços de Personalidade:</label>
+                <input type="text" id="traits" placeholder="Ex: Curioso, Desconfiado, Corajoso...">
+            </div>
+            
+            <div class="tip-box">
+                <p><strong>Dica:</strong> Pense em como seu personagem reage ao inexplicável. É cético? Tem mente aberta? Foi afetado por eventos sobrenaturais no passado?</p>
+            </div>
+            
+            <div class="btn-container">
+                <button class="btn" id="prev-7">Anterior</button>
+                <button class="btn" id="next-7">Próximo: Finalizar</button>
+            </div>
+        </div>
+        
+        <!-- Passo 8: Finalização -->
+        <div class="step-content" id="step-8">
+            <h2>Passo 8: Revisar e Finalizar</h2>
+            
+            <p>Revise todas as informações do seu personagem antes de finalizar a criação:</p>
+            
+            <div id="character-summary">
+                <!-- Resumo do personagem será adicionado via JavaScript -->
+            </div>
+            
+            <div class="warning-box">
+                <p><strong>Atenção:</strong> Após finalizar, seu personagem será salvo e você será redirecionado para a ficha completa.</p>
+            </div>
+            
+            <div class="btn-container">
+                <button class="btn" id="prev-8">Anterior</button>
+                <button class="btn" id="finalize">Finalizar Criação</button>
+            </div>
+        </div>
+    </div>
+     <script type="module" src="create.js"></script>

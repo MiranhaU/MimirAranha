@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard de Personagens</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Crimson+Pro:wght@400;600&display=swap" rel="stylesheet">
+  <!-- Importe seu firebase.js antes do dashboard.js -->
+  <script type="module" src="firebase-noauth.js"></script>
+  <script type="module" src="dashboard.js"></script>
+  <style>
+    :root {
+      --primary-bg: #181316;
+      --secondary-bg: #23171b;
+      --card-bg: #25181c;
+      --accent: #8b1e2d;
+      --accent-hover: #a32435;
+      --accent-dark: #5a101b;
+      --text: #e0d0d0;
+      --text-secondary: #bfa6a6;
+      --border: #3a232a;
+      --shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+      --progress-low: #d63031;
+      --progress-mid: #fdcb6e;
+      --progress-high: #26a69a;
+    }
+    
+    * {
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Lora', serif;
+      background: var(--primary-bg);
+      color: var(--text);
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      background-image: 
+        radial-gradient(circle at 25% 25%, rgba(139, 30, 45, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 75% 75%, rgba(139, 30, 45, 0.03) 0%, transparent 50%);
+    }
+    
+    button {
+      font-family: 'Crimson Pro', serif;
+      background: var(--accent-dark);
+      color: var(--text);
+      border: 1px solid var(--accent);
+      border-radius: 4px;
+      padding: 8px 16px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    button:hover {
+      background: var(--accent);
+      box-shadow: 0 2px 10px rgba(139, 30, 45, 0.3);
+    }
+    
+    .dashboard-header {
+      background: var(--accent-dark);
+      color: var(--text);
+      padding: 24px 0 16px 0;
+      text-align: center;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow);
+      border-bottom: 2px solid var(--accent);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .dashboard-header::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%238b1e2d' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      opacity: 0.1;
+    }
+    
+    .dashboard-header h1 {
+      margin-bottom: 6px;
+      letter-spacing: 1px;
+      color: var(--text);
+      text-shadow: 1px 2px 8px rgba(0, 0, 0, 0.5);
+      font-size: 2.2em;
+    }
+    
+    .dashboard-header p {
+      color: var(--text-secondary);
+      font-style: italic;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    
+    #dashboard-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 16px 32px 16px;
+    }
+    
+    .character-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 24px;
+      margin-bottom: 32px;
+    }
+    
+    .character-card {
+      background: var(--card-bg);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+      color: var(--text);
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .character-card::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, transparent 50%, rgba(139, 30, 45, 0.1) 50%);
+      border-radius: 0 0 0 80px;
+      z-index: 1;
+    }
+    
+    .character-card:hover {
+      box-shadow: 0 6px 24px rgba(139, 30, 45, 0.3);
+      border: 1.5px solid var(--accent);
+      transform: translateY(-3px);
+    }
+    
+    .character-name {
+      font-size: 1.4em;
+      font-weight: bold;
+      color: var(--accent);
+      letter-spacing: 0.5px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 6px;
+    }
+    
+    .character-info {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    
+    .character-info-row {
+      display: flex;
+      justify-content: space-between;
+    }
+    
+    .character-info-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    
+    .character-info-label {
+      color: var(--text-secondary);
+      font-weight: 600;
+    }
+    
+    .character-info-value {
+      color: var(--text);
+    }
+    
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+    
+    .stat-item {
+      background: var(--secondary-bg);
+      border-radius: 6px;
+      padding: 8px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    
+    .stat-item-label {
+      color: var(--text-secondary);
+      font-weight: 600;
+      font-size: 0.9em;
+    }
+    
+    .stat-item-value {
+      color: var(--accent);
+      font-weight: bold;
+      font-size: 1.1em;
+    }
+    
+    .progress-bars {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 8px;
+    }
+    
+    .progress-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9em;
+    }
+    
+    .progress-label {
+      color: var(--text-secondary);
+      font-weight: 600;
+    }
+    
+    .progress-value {
+      color: var(--text);
+    }
+    
+    .progress-bar {
+      height: 10px;
+      background: var(--secondary-bg);
+      border-radius: 5px;
+      overflow: hidden;
+      position: relative;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      border-radius: 5px;
+      transition: width 0.5s ease, background-color 0.5s ease;
+    }
+    
+    .progress-fill.health {
+      background-color: var(--progress-high);
+    }
+    
+    .progress-fill.health.warning {
+      background-color: var(--progress-mid);
+    }
+    
+    .progress-fill.health.danger {
+      background-color: var(--progress-low);
+    }
+    
+    .progress-fill.sanity {
+      background-color: #5758BB;
+    }
+    
+    .progress-fill.magic {
+      background-color: #00b894;
+    }
+    
+    .refresh-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin: 0 auto 24px auto;
+      background: var(--accent-dark);
+      color: var(--text);
+      border: 1px solid var(--accent);
+      padding: 10px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 1.1em;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    }
+    
+    .refresh-button:hover {
+      background: var(--accent);
+      box-shadow: 0 4px 12px rgba(139, 30, 45, 0.3);
+    }
+    
+    .refresh-button svg {
+      transition: transform 0.3s ease;
+    }
+    
+    .refresh-button:hover svg {
+      transform: rotate(180deg);
+    }
+    
+    .selection-button {
+      margin: 0 auto;
+      display: block;
+      padding: 10px 24px;
+      font-size: 1.1em;
+    }
+    
+    /* Modal Styles */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+    
+    .modal.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    .modal-content {
+      background: var(--card-bg);
+      border: 2px solid var(--accent);
+      border-radius: 12px;
+      padding: 24px;
+      min-width: 340px;
+      max-width: 90vw;
+      max-height: 85vh;
+      overflow-y: auto;
+      transform: scale(0.9);
+      transition: all 0.3s ease;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    }
+    
+    .modal.active .modal-content {
+      transform: scale(1);
+    }
+    
+    .modal-header {
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 12px;
+      margin-bottom: 16px;
+    }
+    
+    .modal-header h2 {
+      color: var(--accent);
+      margin: 0;
+    }
+    
+    #character-selection-form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    
+    .character-checkbox {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 8px;
+      border-radius: 4px;
+      transition: background 0.2s ease;
+    }
+    
+    .character-checkbox:hover {
+      background: var(--secondary-bg);
+    }
+    
+    .character-checkbox input {
+      width: 16px;
+      height: 16px;
+      accent-color: var(--accent);
+    }
+    
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      margin-top: 24px;
+      border-top: 1px solid var(--border);
+      padding-top: 16px;
+    }
+    
+    .modal-footer button {
+      padding: 8px 16px;
+    }
+    
+    .modal-footer button.save-button {
+      background: var(--accent);
+      border: 1px solid var(--accent-hover);
+    }
+    
+    .modal-footer button.save-button:hover {
+      background: var(--accent-hover);
+    }
+    
+    /* Spinner animation for loading */
+    @keyframes spinner {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+    
+    .loading {
+      text-align: center;
+      padding: 40px 0;
+    }
+    
+    .spinner {
+      display: inline-block;
+      width: 40px;
+      height: 40px;
+      border: 4px solid rgba(139, 30, 45, 0.3);
+      border-radius: 50%;
+      border-top-color: var(--accent);
+      animation: spinner 1s linear infinite;
+      margin-bottom: 16px;
+    }
+    
+    .empty-message {
+      text-align: center;
+      margin: 40px 0;
+      color: var(--text-secondary);
+      font-style: italic;
+    }
+    
+    @media (max-width: 768px) {
+      .dashboard-header h1 {
+        font-size: 1.8em;
+      }
+      
+      .character-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .stats-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard-header">
+    <h1>Dashboard de Personagens</h1>
+    <p>Painel de monitoramento de personagens para o Guardião - Call of Cthulhu</p>
+  </div>
+  
+  <div id="dashboard-container">
+    <!-- Conteúdo será gerado dinamicamente pelo JavaScript -->
+    <div class="loading">
+      <div class="spinner"></div>
+      <p>Carregando personagens...</p>
+    </div>
+  </div>
+</body>
+</html>
